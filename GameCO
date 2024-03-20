@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameController : MonoBehaviour
+{
+  public PlayerController playerController;
+  public ScoreManager scoreManager;
+  public GameOverScreen gameOverScreen;
+
+  private void Start()
+  {
+    playerController = FindObjectOfType<PlayerController>();
+    scoreManager = FindObjectOfType<ScoreManager>();
+    gameOverScreen = FindObjectOfType<GameOverScreen>();
+
+    playerController.OnTriggerEnter += HandleCollisions;
+  }
+
+  private void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.Escape))
+    {
+      Application.Quit();
+    }
+  }
+
+  private void HandleCollisions(Collider other)
+  {
+    if (other.tag == "Obstacle")
+    {
+      gameOverScreen.Show();
+      scoreManager.Reset();
+    }
+  }
